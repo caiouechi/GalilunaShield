@@ -1,0 +1,112 @@
+<Window x:Class="GalilunaShield.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:GalilunaShield.App"
+        xmlns:views="clr-namespace:GalilunaShield.App.Views"
+        Title="Galiluna Shield" Height="760" Width="1180" MinHeight="600" MinWidth="900"
+        Icon="Assets/galiluna.ico" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="Vis" />
+        <local:BoolToVisibilityConverter x:Key="VisInverse" Invert="True" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Navigation -->
+        <Border Grid.Column="0" Background="{StaticResource NavBg}">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="18,22,18,18">
+                    <Image Source="Assets/logo-64.png" Width="36" Height="36" />
+                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="Galiluna" Foreground="White" FontSize="18" FontWeight="SemiBold" />
+                        <TextBlock Text="Shield" Foreground="{StaticResource NavText}" FontSize="13" Margin="0,-4,0,0" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Bottom" Margin="18,0,18,18">
+                    <Border CornerRadius="10" Padding="12" Background="{StaticResource NavHover}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="10" Height="10" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="Fill" Value="#6B7390" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                                                    <Setter Property="Fill" Value="#2E9E5B" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsRecording}" Value="True">
+                                                    <Setter Property="Fill" Value="#D7263D" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock Text="{Binding StatusBadgeText}" Foreground="White" FontWeight="SemiBold" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding SourcesText}" Foreground="{StaticResource NavText}" FontSize="12" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Text="{Binding Version, StringFormat='Version {0}'}" Foreground="{StaticResource NavText}" FontSize="11" Margin="4,10,0,0" Opacity="0.7" />
+                </StackPanel>
+
+                <StackPanel Margin="0,4,0,0">
+                    <RadioButton x:Name="NavDashboard" Style="{StaticResource NavButton}" Content="Dashboard" IsChecked="True" GroupName="nav" />
+                    <RadioButton x:Name="NavAlerts" Style="{StaticResource NavButton}" GroupName="nav">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Alerts" />
+                            <Border Style="{StaticResource Badge}" Background="{StaticResource Critical}" Margin="8,0,0,0"
+                                    Visibility="{Binding NewAlertCount, Converter={x:Static local:MainWindow.NonZeroToVisibility}}">
+                                <TextBlock Style="{StaticResource BadgeText}" Text="{Binding NewAlertCount}" />
+                            </Border>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton x:Name="NavTranscript" Style="{StaticResource NavButton}" Content="Live transcript" GroupName="nav" />
+                    <RadioButton x:Name="NavReports" Style="{StaticResource NavButton}" Content="Reports" GroupName="nav" />
+                    <RadioButton x:Name="NavWords" Style="{StaticResource NavButton}" Content="Red-flag words" GroupName="nav" />
+                    <RadioButton x:Name="NavBuckets" Style="{StaticResource NavButton}" Content="Topic packs" GroupName="nav" />
+                    <RadioButton x:Name="NavSettings" Style="{StaticResource NavButton}" Content="Settings" GroupName="nav" />
+                    <RadioButton x:Name="NavAbout" Style="{StaticResource NavButton}" Content="How it works" GroupName="nav" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Pages -->
+        <Grid Grid.Column="1">
+            <views:DashboardView Visibility="{Binding IsChecked, ElementName=NavDashboard, Converter={StaticResource Vis}}" />
+            <views:AlertsView Visibility="{Binding IsChecked, ElementName=NavAlerts, Converter={StaticResource Vis}}" />
+            <views:TranscriptView Visibility="{Binding IsChecked, ElementName=NavTranscript, Converter={StaticResource Vis}}" />
+            <views:ReportsView Visibility="{Binding IsChecked, ElementName=NavReports, Converter={StaticResource Vis}}" />
+            <views:WordListView Visibility="{Binding IsChecked, ElementName=NavWords, Converter={StaticResource Vis}}" DataContext="{Binding WordList}" />
+            <views:BucketsView Visibility="{Binding IsChecked, ElementName=NavBuckets, Converter={StaticResource Vis}}" DataContext="{Binding Buckets}" />
+            <views:SettingsView Visibility="{Binding IsChecked, ElementName=NavSettings, Converter={StaticResource Vis}}" DataContext="{Binding Settings}" />
+            <views:AboutView Visibility="{Binding IsChecked, ElementName=NavAbout, Converter={StaticResource Vis}}" />
+
+            <!-- First-run / loading overlay -->
+            <Border Background="#CC0F1430" Visibility="{Binding IsReady, Converter={StaticResource VisInverse}}">
+                <Border Style="{StaticResource CardBorder}" Width="520" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0">
+                    <StackPanel>
+                        <Border CornerRadius="12,12,0,0" Height="220">
+                            <Border.Background>
+                                <ImageBrush ImageSource="Assets/hero.jpg" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <StackPanel Margin="28,20,28,28">
+                        <TextBlock Text="{Binding StatusHeadline}" Style="{StaticResource H1}" Margin="0,0,0,6" />
+                        <TextBlock Text="{Binding StatusDetail}" Style="{StaticResource MutedText}" />
+                        <ProgressBar Height="8" Margin="0,16,0,0" Minimum="0" Maximum="1" Value="{Binding DownloadProgress, Mode=OneWay}"
+                                     Visibility="{Binding IsDownloading, Converter={StaticResource Vis}}" Foreground="{StaticResource Brand}" BorderThickness="0" Background="{StaticResource Line}" />
+                        <ProgressBar Height="8" Margin="0,16,0,0" IsIndeterminate="True"
+                                     Visibility="{Binding IsDownloading, Converter={StaticResource VisInverse}}" Foreground="{StaticResource Brand}" BorderThickness="0" Background="{StaticResource Line}" />
+                        <TextBlock Style="{StaticResource MutedText}" Margin="0,14,0,0"
+                                   Text="Galiluna Shield listens and understands speech entirely on this computer. No audio or text ever leaves it." />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

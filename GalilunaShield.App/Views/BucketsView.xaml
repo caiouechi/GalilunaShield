@@ -1,0 +1,59 @@
+<UserControl x:Class="GalilunaShield.App.Views.BucketsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GalilunaShield.App">
+    <UserControl.Resources>
+        <local:BoolToVisibilityConverter x:Key="Vis" />
+    </UserControl.Resources>
+    <Grid Margin="28,24,28,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <StackPanel>
+                <TextBlock Text="Topic packs" Style="{StaticResource H1}" />
+                <TextBlock Style="{StaticResource MutedText}" MaxWidth="820" HorizontalAlignment="Left"
+                           Text="Ready-made lists of words you can switch on with one click. Pick the themes you don't want your child hearing or discussing - a religion, gambling, horror, dating, heavy cursing - and their words are added to the protection straight away. Turn one off and they are removed. You can also drop your own list into the topic-packs folder." />
+            </StackPanel>
+            <Button Content="Open topic-packs folder" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Command="{Binding OpenFolderCommand}" />
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" Margin="0,16,0,0" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="2" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,12,12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0" IsChecked="{Binding Enabled, Mode=TwoWay}" VerticalAlignment="Top" Margin="0,2,10,0" />
+                                <StackPanel Grid.Column="1">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="15" />
+                                        <Border Style="{StaticResource Badge}" Background="{StaticResource Possible}" Margin="8,0,0,0" Visibility="{Binding Custom, Converter={StaticResource Vis}}">
+                                            <TextBlock Style="{StaticResource BadgeText}" Text="CUSTOM" />
+                                        </Border>
+                                        <TextBlock Text="{Binding CountText}" Style="{StaticResource MutedText}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Description}" Style="{StaticResource MutedText}" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <TextBlock Grid.Row="2" Text="{Binding Summary}" Style="{StaticResource MutedText}" Margin="0,8,0,0" />
+    </Grid>
+</UserControl>

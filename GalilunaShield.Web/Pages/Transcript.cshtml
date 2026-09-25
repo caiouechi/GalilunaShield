@@ -1,0 +1,33 @@
+@page
+@model TranscriptModel
+@{
+    ViewData["Title"] = "Transcript";
+    ViewData["nav"] = "transcript";
+}
+<div class="toolbar">
+    <h2 class="section" style="margin:0">Transcript</h2>
+    <span class="muted small">Everything understood, newest first.</span>
+    <span class="spacer"></span>
+    <form method="get" style="display:flex;gap:8px;align-items:center">
+        <input type="date" name="day" value="@Model.Day.ToString("yyyy-MM-dd")" class="btn ghost sm" style="cursor:auto" onchange="this.form.submit()" />
+    </form>
+</div>
+
+@if (Model.Lines.Count == 0)
+{
+    <div class="card empty"><img src="~/img/calm.png" alt="" /><div><b>Nothing on this day.</b></div></div>
+}
+else
+{
+    <table>
+        <tr><th style="width:90px">Time</th><th style="width:220px">Source</th><th>What was heard</th></tr>
+        @foreach (var (time, source, text, unclear) in Model.Rows)
+        {
+            <tr>
+                <td class="muted small">@time</td>
+                <td class="muted small">@source</td>
+                <td class="@(unclear ? "muted" : "")" style="@(unclear ? "font-style:italic" : "")">@text</td>
+            </tr>
+        }
+    </table>
+}

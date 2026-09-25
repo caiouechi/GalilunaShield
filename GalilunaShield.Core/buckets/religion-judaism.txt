@@ -1,0 +1,24 @@
+# name: Judaism
+# description: Jewish vocabulary: the Torah, synagogue, rabbis, practices and holidays.
+[Judaism | low]
+torah
+talmud
+synagogue
+rabbi
+shabbat
+sabbath
+kosher
+jewish
+judaism
+bar mitzvah
+bat mitzvah
+hanukkah
+chanukah
+yom kippur
+rosh hashanah
+passover
+kippah
+yarmulke
+zionist
+zionism
+hebrew school

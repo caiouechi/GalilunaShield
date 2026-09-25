@@ -1,0 +1,88 @@
+<UserControl x:Class="GalilunaShield.App.Views.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28,24,28,28" MaxWidth="900" HorizontalAlignment="Left">
+            <TextBlock Text="How Galiluna Shield works" Style="{StaticResource H1}" />
+            <TextBlock Style="{StaticResource MutedText}" Text="A quiet guardian for the computer your child uses. It listens, understands, and only speaks up when something needs your attention." />
+
+            <TextBlock Text="1. It listens" Style="{StaticResource H2}" />
+            <TextBlock>
+                To <Bold>what your child says</Bold> through any microphone (it follows the one that actually has sound, so a headset works even when it is not the Windows default),
+                and to <Bold>what your child hears</Bold> in calls and games. Videos and music players are skipped so a YouTube video does not flood the transcript.
+            </TextBlock>
+
+            <TextBlock Text="2. It understands, privately" Style="{StaticResource H2}" />
+            <TextBlock>
+                Speech is turned into text by a recognizer that runs <Bold>entirely on this computer</Bold>. No audio, no text, nothing is ever uploaded.
+                The only download is the recognizer model itself, once, on first run.
+            </TextBlock>
+
+            <TextBlock Text="3. It watches for red flags" Style="{StaticResource H2}" />
+            <TextBlock>
+                Every sentence is checked against your red-flag word list: body safety, strangers, grooming, self-harm, violence, bullying, drugs, personal information, scams and profanity.
+                Close mis-hearings count too ("kill my sale" is flagged as a possible "kill myself"), because speech recognition is never perfect.
+                Speech it could not make out at all is kept as an "unclear" clip you can listen to.
+            </TextBlock>
+
+            <TextBlock Text="4. It keeps proof" Style="{StaticResource H2}" />
+            <TextBlock>
+                Each alert saves the exact sentence, what was said just before, the audio clip, and a SHA-256 fingerprint that proves the clip has not been altered.
+                In <Bold>Smart recording</Bold> mode nothing is recorded until red flags pile up (or a single critical one appears); then it records everything, including the minute before, for as long as the situation lasts.
+                You can also record the microphone, system audio or both continuously.
+            </TextBlock>
+
+            <TextBlock Text="5. It reports" Style="{StaticResource H2}" />
+            <TextBlock>
+                Daily and weekly reports open in your browser, work offline, and summarise everything by severity, category, time and source with the audio embedded.
+                A CSV export sits next to each report for spreadsheets, schools, counsellors or the police.
+            </TextBlock>
+
+            <TextBlock Text="More ways it helps" Style="{StaticResource H2}" />
+            <TextBlock>
+                <Run Text="&#8226; Where it was heard: " FontWeight="SemiBold" /><Run Text="every alert names the program (Discord, Roblox, a game) and the exact time, so you know whether your child heard something in a call, a game, or said it themselves." />
+                <LineBreak />
+                <Run Text="&#8226; A picture of the screen: " FontWeight="SemiBold" /><Run Text="the moment a red flag happens, Galiluna Shield captures all monitors, so you see what your child was looking at." />
+                <LineBreak />
+                <Run Text="&#8226; Who is talking: " FontWeight="SemiBold" /><Run Text="it warns you when a voice that sounds like an adult is speaking to your child online." />
+                <LineBreak />
+                <Run Text="&#8226; Topic packs: " FontWeight="SemiBold" /><Run Text="switch on ready-made lists - a religion, gambling, horror, dating, heavy cursing - and their words are added instantly." />
+                <LineBreak />
+                <Run Text="&#8226; It stays on: " FontWeight="SemiBold" /><Run Text="it can start hidden with Windows, and the report logs every time monitoring was turned off or the computer shut down - so you know if the shield was bypassed." />
+                <LineBreak />
+                <Run Text="&#8226; Light on older PCs: " FontWeight="SemiBold" /><Run Text="a Light performance mode keeps a slower computer responsive; auto-delete keeps recordings from filling the disk." />
+            </TextBlock>
+
+            <TextBlock Text="What it is not" Style="{StaticResource H2}" />
+            <TextBlock>
+                Galiluna Shield is a tool to help you notice and investigate. It does not replace conversation with your child, and it can miss things or raise false alarms.
+                Always listen to the clip before acting on an alert. Check your local laws about recording conversations, especially of other people's children.
+            </TextBlock>
+
+            <TextBlock Text="Where things are" Style="{StaticResource H2}" />
+            <TextBlock>
+                <Run Text="Alerts, transcripts, recordings and reports: " /><Run Text="{Binding OutputDirectory, Mode=OneWay}" FontWeight="SemiBold" />
+                <LineBreak />
+                <Run Text="Settings and the red-flag word list: " /><Run Text="{Binding ConfigDirectory, Mode=OneWay}" FontWeight="SemiBold" />
+            </TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                <Button Content="Open output folder" Style="{StaticResource SecondaryButton}" Command="{Binding OpenOutputFolderCommand}" Margin="0,0,8,0" />
+                <Button Content="Open settings folder" Style="{StaticResource SecondaryButton}" Command="{Binding OpenSettingsFolderCommand}" />
+            </StackPanel>
+
+            <TextBlock Text="Your agreement &amp; the legal documents" Style="{StaticResource H2}" />
+            <TextBlock Style="{StaticResource MutedText}" Text="{Binding ConsentSummary}" TextWrapping="Wrap" />
+            <WrapPanel Margin="0,10,0,0">
+                <Button Content="Privacy Policy" Style="{StaticResource SecondaryButton}" Margin="0,0,8,8" Command="{Binding OpenLegalCommand}" CommandParameter="PRIVACY-POLICY.md" />
+                <Button Content="Licence (EULA)" Style="{StaticResource SecondaryButton}" Margin="0,0,8,8" Command="{Binding OpenLegalCommand}" CommandParameter="EULA.md" />
+                <Button Content="Acceptable Use" Style="{StaticResource SecondaryButton}" Margin="0,0,8,8" Command="{Binding OpenLegalCommand}" CommandParameter="ACCEPTABLE-USE.md" />
+                <Button Content="Cookie Policy" Style="{StaticResource SecondaryButton}" Margin="0,0,8,8" Command="{Binding OpenLegalCommand}" CommandParameter="COOKIE-POLICY.md" />
+                <Button Content="My consent record" Style="{StaticResource SecondaryButton}" Margin="0,0,8,8" Command="{Binding OpenLegalCommand}" CommandParameter="consent.json" />
+            </WrapPanel>
+            <TextBlock Style="{StaticResource MutedText}" Margin="0,6,0,0" TextWrapping="Wrap"
+                       Text="You are responsible for using Galiluna Shield lawfully, including any consent the law where you live requires before recording people. See the Acceptable Use Policy." />
+
+            <TextBlock Style="{StaticResource MutedText}" Margin="0,28,0,0" Text="{Binding Version, StringFormat='Galiluna Shield {0}. Speech recognition by whisper.cpp via Whisper.net; audio via NAudio.'}" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

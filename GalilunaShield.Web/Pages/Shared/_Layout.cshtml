@@ -1,0 +1,41 @@
+@{
+    var nav = (ViewData["nav"] as string) ?? "";
+    var newCount = ViewData["newCount"] as int? ?? 0;
+    var bare = ViewData["bare"] as bool? ?? false;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>@(ViewData["Title"] ?? "Galiluna Shield") · Galiluna Shield</title>
+    <link rel="icon" href="~/img/logo.png" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    @if (!bare)
+    {
+        <div class="topbar">
+            <div class="inner">
+                <a class="brand" href="/"><img class="logo" src="~/img/logo.png" alt="" /> <span>Galiluna Shield</span></a>
+                <nav class="nav">
+                    <a href="/" class="@(nav == "home" ? "active" : "")">Dashboard</a>
+                    <a href="/Alerts" class="@(nav == "alerts" ? "active" : "")">Alerts@(newCount > 0 ? Html.Raw($"<span class=\"pill\">{newCount}</span>") : null)</a>
+                    <a href="/Transcript" class="@(nav == "transcript" ? "active" : "")">Transcript</a>
+                    <a href="/Reports" class="@(nav == "reports" ? "active" : "")">Reports</a>
+                </nav>
+                <span class="spacer"></span>
+                <a class="btn ghost sm" href="/Logout">Lock</a>
+            </div>
+        </div>
+    }
+    <main class="@(bare ? "" : "container")">
+        @RenderBody()
+    </main>
+    @if (!bare)
+    {
+        <footer>Galiluna Shield · This dashboard runs on your child's computer. Nothing here leaves your home network.</footer>
+    }
+</body>
+</html>

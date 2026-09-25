@@ -1,0 +1,66 @@
+<UserControl x:Class="GalilunaShield.App.Views.ReportsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GalilunaShield.App">
+    <UserControl.Resources>
+        <local:ZeroToVisibilityConverter x:Key="Zero" />
+    </UserControl.Resources>
+    <Grid Margin="28,24,28,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="Reports" Style="{StaticResource H1}" />
+            <TextBlock Style="{StaticResource MutedText}" Text="Reports are web pages that open in your browser and work without internet. They summarise alerts by severity, category, time and source, embed the audio clips, and carry a fingerprint for every clip so it can be shown to be unaltered. A CSV file is written next to each report for spreadsheets or professionals." />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,0">
+            <Button Content="Open reports home" Style="{StaticResource PrimaryButton}" Command="{Binding OpenReportsCommand}" Margin="0,0,10,0" />
+            <Button Content="Build today's report" Style="{StaticResource SecondaryButton}" Command="{Binding BuildDailyReportCommand}" Margin="0,0,10,0" />
+            <Button Content="Build this week's report" Style="{StaticResource SecondaryButton}" Command="{Binding BuildWeeklyReportCommand}" Margin="0,0,10,0" />
+            <Button Content="Export evidence pack (.zip)" Style="{StaticResource SecondaryButton}" Command="{Binding ExportEvidenceCommand}" Margin="0,0,10,0" />
+            <Button Content="Open output folder" Style="{StaticResource SecondaryButton}" Command="{Binding OpenOutputFolderCommand}" Margin="0,0,10,0" />
+            <Button Content="Refresh" Style="{StaticResource SecondaryButton}" Command="{Binding RefreshReportsCommand}" />
+        </StackPanel>
+
+        <Border Grid.Row="2" Style="{StaticResource CardBorder}" Margin="0,16,0,0" Padding="16,12">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Existing reports" FontWeight="SemiBold" Margin="0,0,0,8" />
+                <Grid>
+                    <TextBlock Text="No reports yet. A daily report is created automatically after the first alert, or build one now." Style="{StaticResource MutedText}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Visibility="{Binding ReportFiles.Count, Converter={StaticResource Zero}}" />
+                    <ListBox ItemsSource="{Binding ReportFiles}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                <Setter Property="Margin" Value="0,0,0,4" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" Padding="0,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                            <TextBlock Text="{Binding LastWriteTime, StringFormat='Updated {0:d MMM yyyy HH:mm}'}" Style="{StaticResource MutedText}" />
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Content="Open" Padding="14,5" Margin="0,0,8,0" VerticalAlignment="Center"
+                                                Command="{Binding DataContext.OpenFileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding FullName}" />
+                                        <Button Grid.Column="2" Content="Show in folder" Style="{StaticResource SecondaryButton}" Padding="14,5" VerticalAlignment="Center"
+                                                Command="{Binding DataContext.RevealFileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding FullName}" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

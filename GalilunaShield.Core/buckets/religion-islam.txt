@@ -1,0 +1,35 @@
+# name: Islam
+# description: Islamic vocabulary: Allah, the Quran, the Prophet, mosques, practices and holidays.
+[Islam | low]
+allah
+allahu akbar
+quran
+koran
+muhammad
+mohammed
+the prophet
+prophet muhammad
+mosque
+masjid
+imam
+ramadan
+fasting for ramadan
+eid
+halal
+haram
+hijab
+niqab
+burqa
+islam
+islamic
+muslim
+muslims
+jihad
+sharia
+salah
+salat
+hajj
+mecca
+inshallah
+mashallah
+convert to islam

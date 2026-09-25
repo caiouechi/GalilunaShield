@@ -1,0 +1,290 @@
+<UserControl x:Class="GalilunaShield.App.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GalilunaShield.App">
+    <UserControl.Resources>
+        <local:EnumDescriptionConverter x:Key="EnumText" />
+        <local:BoolToVisibilityConverter x:Key="Vis" />
+        <Style x:Key="Section" TargetType="Border" BasedOn="{StaticResource CardBorder}">
+            <Setter Property="Margin" Value="0,0,0,14" />
+        </Style>
+        <Style x:Key="Hint" TargetType="TextBlock" BasedOn="{StaticResource MutedText}">
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+        <Style x:Key="SecTitle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="Margin" Value="0,0,0,4" />
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="28,24,28,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <StackPanel>
+                <TextBlock Text="Settings" Style="{StaticResource H1}" />
+                <TextBlock Style="{StaticResource MutedText}" Text="Changes apply when you press Save. Some settings restart the engine for a few seconds." />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <TextBlock Text="{Binding Status}" Foreground="{StaticResource Ok}" VerticalAlignment="Center" Margin="0,0,14,0" FontSize="13" TextWrapping="Wrap" MaxWidth="280" />
+                <Button Content="Save" Style="{StaticResource PrimaryButton}" Command="{Binding SaveCommand}" Margin="0,0,8,0" />
+                <Button Content="Revert" Style="{StaticResource SecondaryButton}" Command="{Binding RevertCommand}" />
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" Margin="0,16,0,0" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT COLUMN -->
+                <StackPanel Margin="0,0,7,0">
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Monitoring" Style="{StaticResource SecTitle}" />
+                            <Label Content="What to listen to" />
+                            <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding Mode}">
+                                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={StaticResource EnumText}}" /></DataTemplate></ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <CheckBox Content="Start monitoring as soon as the app opens" IsChecked="{Binding StartMonitoringOnLaunch}" Margin="0,12,0,0" />
+                            <CheckBox Content="Start Galiluna Shield with Windows (in the background)" IsChecked="{Binding StartWithWindows}" />
+                            <CheckBox Content="Start completely hidden - no window, no tray icon (stealth)" IsChecked="{Binding StartHidden}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="Hidden start needs 'Start with Windows'. Bring the window back any time with the show-window hotkey below." />
+                            <Border Background="{StaticResource BrandLight}" CornerRadius="8" Padding="12" Margin="0,12,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Keep-alive (tamper resistance)" FontWeight="SemiBold" />
+                                    <TextBlock Style="{StaticResource Hint}" Text="{Binding KeepAliveText}" />
+                                    <Button Content="{Binding KeepAliveButtonText}" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Left" Margin="0,8,0,0" Command="{Binding ToggleKeepAliveCommand}" />
+                                    <TextBlock Style="{StaticResource Hint}" Text="Strongest when your child uses a standard (non-administrator) Windows account. See SECURITY notes in the install folder." />
+                                </StackPanel>
+                            </Border>
+                            <Label Content="Global start/stop hotkey" />
+                            <TextBox Text="{Binding Hotkey}" Width="200" HorizontalAlignment="Left" />
+                            <Label Content="Show-window hotkey (when running hidden)" />
+                            <TextBox Text="{Binding ShowWindowHotkey}" Width="200" HorizontalAlignment="Left" />
+                            <TextBlock Style="{StaticResource Hint}" Text="Works from any window. Modifiers + one key, e.g. Ctrl+Alt+G. Avoid plain Ctrl+S." />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Recording (proof)" Style="{StaticResource SecTitle}" />
+                            <Label Content="Mode" />
+                            <ComboBox ItemsSource="{Binding RecordingModes}" SelectedItem="{Binding RecordingMode}">
+                                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={StaticResource EnumText}}" /></DataTemplate></ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <Border Background="#22E0A800" BorderBrush="{StaticResource Medium}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,10,0,0"
+                                    Visibility="{Binding IsContinuousRecording, Converter={StaticResource Vis}}">
+                                <TextBlock TextWrapping="Wrap" FontSize="12" Text="Always-on recording captures audio non-stop and uses a lot of disk space - roughly 110 MB per hour, per source. Turn on auto-delete below, or use Smart mode to record only around red flags." />
+                            </Border>
+
+                            <StackPanel Visibility="{Binding IsSmart, Converter={StaticResource Vis}}">
+                                <Grid Margin="0,8,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="12" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                    <StackPanel><Label Content="Start after this many red flags..." /><TextBox Text="{Binding SmartTriggerAlerts}" /></StackPanel>
+                                    <StackPanel Grid.Column="2"><Label Content="...within this many minutes" /><TextBox Text="{Binding SmartTriggerWindowMinutes}" /></StackPanel>
+                                </Grid>
+                                <CheckBox Content="A single CRITICAL red flag starts recording immediately" IsChecked="{Binding SmartTriggerOnCritical}" />
+                                <Label Content="Calm-down margin: keep recording until this many minutes pass with no new red flag" />
+                                <TextBox Text="{Binding SmartRecordMinutes}" Width="90" HorizontalAlignment="Left" />
+                                <Label Content="Include seconds from before the trigger" />
+                                <TextBox Text="{Binding PreRollSeconds}" Width="90" HorizontalAlignment="Left" />
+                            </StackPanel>
+                            <Label Content="Split recordings into files of at most (minutes)" />
+                            <TextBox Text="{Binding MaxFileMinutes}" Width="90" HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Auto-delete saved audio" Style="{StaticResource SecTitle}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="Keeps the disk from filling up over months of use. Deleting is permanent, so this is off by default." />
+                            <CheckBox Content="Automatically delete old audio" IsChecked="{Binding RetentionEnabled}" Margin="0,8,0,0" />
+                            <StackPanel Visibility="{Binding RetentionEnabled, Converter={StaticResource Vis}}" Margin="0,4,0,0">
+                                <Label Content="Delete audio older than (days)" />
+                                <TextBox Text="{Binding RetentionDays}" Width="90" HorizontalAlignment="Left" />
+                                <CheckBox Content="Also delete the long proof recordings" IsChecked="{Binding RetentionIncludeRecordings}" />
+                                <CheckBox Content="Also delete screenshots" IsChecked="{Binding RetentionIncludeScreenshots}" />
+                                <CheckBox Content="Keep the written record (alert text, transcripts, reports) even after audio is deleted" IsChecked="{Binding RetentionKeepTextRecord}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Alerts to your phone" Style="{StaticResource SecTitle}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="Get notified when you're away from the computer. Everything is sent from this PC; there is no server of ours." />
+                            <CheckBox Content="Send me notifications for red flags" IsChecked="{Binding NotificationsEnabled}" Margin="0,8,0,0" />
+                            <StackPanel Visibility="{Binding NotificationsEnabled, Converter={StaticResource Vis}}">
+                                <Label Content="Only for this severity and above" />
+                                <ComboBox ItemsSource="{Binding Severities2}" SelectedItem="{Binding NotifyMinSeverity}" Width="140" HorizontalAlignment="Left" />
+
+                                <CheckBox Content="Email" IsChecked="{Binding EmailEnabled}" Margin="0,10,0,0" FontWeight="SemiBold" />
+                                <StackPanel Visibility="{Binding EmailEnabled, Converter={StaticResource Vis}}" Margin="0,2,0,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="8" /><ColumnDefinition Width="90" /></Grid.ColumnDefinitions>
+                                        <StackPanel><Label Content="SMTP server (e.g. smtp.gmail.com)" /><TextBox Text="{Binding SmtpHost}" /></StackPanel>
+                                        <StackPanel Grid.Column="2"><Label Content="Port" /><TextBox Text="{Binding SmtpPort}" /></StackPanel>
+                                    </Grid>
+                                    <Label Content="Username" /><TextBox Text="{Binding SmtpUser}" />
+                                    <Label Content="Password / app password" /><TextBox Text="{Binding SmtpPassword}" />
+                                    <Label Content="Send alerts to (your email)" /><TextBox Text="{Binding EmailTo}" />
+                                    <CheckBox Content="Use SSL/TLS" IsChecked="{Binding SmtpSsl}" />
+                                </StackPanel>
+
+                                <CheckBox Content="Push (ntfy / Telegram / Slack / Discord)" IsChecked="{Binding WebhookEnabled}" Margin="0,10,0,0" FontWeight="SemiBold" />
+                                <StackPanel Visibility="{Binding WebhookEnabled, Converter={StaticResource Vis}}" Margin="0,2,0,0">
+                                    <Label Content="Service" />
+                                    <ComboBox ItemsSource="{Binding WebhookTypes}" SelectedItem="{Binding WebhookType}" Width="160" HorizontalAlignment="Left" />
+                                    <Label Content="Webhook / topic URL (for ntfy: https://ntfy.sh/your-secret-topic)" />
+                                    <TextBox Text="{Binding WebhookUrl}" />
+                                    <Label Content="Telegram bot token (Telegram only)" /><TextBox Text="{Binding TelegramBotToken}" />
+                                    <Label Content="Telegram chat id (Telegram only)" /><TextBox Text="{Binding TelegramChatId}" />
+                                </StackPanel>
+
+                                <Button Content="Send a test notification" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding TestNotificationCommand}" />
+                                <TextBlock Style="{StaticResource Hint}" Text="Save first, then test. ntfy.sh is the easiest: install the free ntfy app, pick a secret topic name, and use https://ntfy.sh/that-topic here." />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Parent dashboard (phone / browser)" Style="{StaticResource SecTitle}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="A private web page, served from this computer, that lets you review alerts, listen to clips and see screenshots from your phone on the same home wifi. Sign in with your parent PIN." />
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="12" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                <StackPanel><Label Content="Port" /><TextBox Text="{Binding WebPort}" Width="90" HorizontalAlignment="Left" /></StackPanel>
+                                <CheckBox Grid.Column="2" Content="Enable" IsChecked="{Binding WebEnabled}" VerticalAlignment="Bottom" Margin="0,0,0,6" />
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <Button Content="Start dashboard" Command="{Binding StartDashboardCommand}" Margin="0,0,8,0" />
+                                <Button Content="Stop" Style="{StaticResource SecondaryButton}" Command="{Binding StopDashboardCommand}" Margin="0,0,8,0" />
+                                <Button Content="Open here" Style="{StaticResource SecondaryButton}" Command="{Binding OpenDashboardCommand}" />
+                            </StackPanel>
+                            <TextBlock Style="{StaticResource Hint}" Text="{Binding DashboardStatus}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Parent PIN" Style="{StaticResource SecTitle}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="When set, stopping monitoring, exiting, and changing settings, topics or the word list ask for this PIN. 4 to 8 digits. Empty for no PIN." />
+                            <TextBox Text="{Binding ParentPin}" Width="160" HorizontalAlignment="Left" Margin="0,8,0,0" MaxLength="8" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- RIGHT COLUMN -->
+                <StackPanel Grid.Column="1" Margin="7,0,0,0">
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Performance (computer power)" Style="{StaticResource SecTitle}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="If your child's computer is not powerful, choose Light: the app uses less CPU and stays responsive, at the cost of some accuracy." />
+                            <ComboBox ItemsSource="{Binding Presets}" SelectedItem="{Binding Performance}" Margin="0,8,0,0">
+                                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" /></DataTemplate></ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Style="{StaticResource Hint}" Text="{Binding PresetDescription}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="{Binding SuggestedPresetText}" FontStyle="Italic" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Speech recognition" Style="{StaticResource SecTitle}" />
+                            <Label Content="Language" />
+                            <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}" Width="140" HorizontalAlignment="Left" />
+                            <TextBlock Style="{StaticResource Hint}" Text="'auto' detects the language. Picking the one spoken at home improves accuracy." />
+                            <CheckBox Content="Also flag close mis-hearings as 'possible' matches" IsChecked="{Binding FuzzyMatching}" Margin="0,12,0,0" />
+                            <CheckBox Content="Save audio the recognizer was unsure about (unclear clips)" IsChecked="{Binding SaveUnclearClips}" />
+                            <Label Content="Treat speech below this confidence as unclear (%)" />
+                            <TextBox Text="{Binding LowConfidencePercent}" Width="80" HorizontalAlignment="Left" />
+                            <Label Content="Silence level (lower = hears quieter speech, more noise)" />
+                            <TextBox Text="{Binding SilenceThreshold}" Width="100" HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Screenshots at a red flag" Style="{StaticResource SecTitle}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="Saves a picture of every monitor the moment a red flag happens, so you see what your child was looking at." />
+                            <CheckBox Content="Capture all screens when a red flag is detected" IsChecked="{Binding ScreenshotsEnabled}" Margin="0,8,0,0" />
+                            <StackPanel Visibility="{Binding ScreenshotsEnabled, Converter={StaticResource Vis}}">
+                                <Label Content="Only for this severity and above" />
+                                <ComboBox ItemsSource="{Binding Severities}" SelectedItem="{Binding ScreenshotMinSeverity}" Width="140" HorizontalAlignment="Left" />
+                                <Label Content="Image quality (lower = smaller files)" />
+                                <TextBox Text="{Binding ScreenshotQuality}" Width="80" HorizontalAlignment="Left" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Who is talking?" Style="{StaticResource SecTitle}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="Warns you when a voice that sounds like an adult is talking to your child in a call or game. It cannot identify people; it judges by pitch, so treat it as a hint to listen to the clip." />
+                            <CheckBox Content="Flag adult-sounding voices" IsChecked="{Binding VoiceEnabled}" Margin="0,8,0,0" />
+                            <StackPanel Visibility="{Binding VoiceEnabled, Converter={StaticResource Vis}}">
+                                <CheckBox Content="In calls and games (someone talking to your child online)" IsChecked="{Binding VoiceFlagOnSystemAudio}" />
+                                <CheckBox Content="On the microphone (an adult in the room, an older sibling)" IsChecked="{Binding VoiceFlagOnMicrophone}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Devices &amp; programs" Style="{StaticResource SecTitle}" />
+                            <CheckBox Content="Automatically follow the microphone that has sound (headset vs built-in)" IsChecked="{Binding AutoSelectMicrophone}" Margin="0,10,0,0" />
+                            <Label Content="Force a microphone (part of its name, optional)" />
+                            <TextBox Text="{Binding MicrophoneDeviceName}" />
+                            <Label Content="Programs whose sound is ignored (videos, music) - comma separated" />
+                            <TextBox Text="{Binding IgnoreProcesses}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="54" VerticalContentAlignment="Top" />
+                            <Label Content="Only listen to these programs (optional, e.g. Discord, RobloxPlayerBeta)" />
+                            <TextBox Text="{Binding FocusProcesses}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Muted words &amp; apps" Style="{StaticResource SecTitle}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="Words and apps you muted from the Alerts page appear here. Remove one to start being alerted on it again. Muted apps are still transcribed; they just don't raise alerts." />
+                            <Label Content="Muted words (comma separated)" />
+                            <TextBox Text="{Binding MutedWords}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" VerticalContentAlignment="Top" />
+                            <Label Content="Muted apps (comma separated)" />
+                            <TextBox Text="{Binding MutedApps}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="Files &amp; reports" Style="{StaticResource SecTitle}" />
+                            <Label Content="Where alerts, recordings, screenshots and reports are saved" />
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding OutputDirectory}" />
+                                <Button Grid.Column="1" Content="Browse" Style="{StaticResource SecondaryButton}" Command="{Binding BrowseOutputCommand}" Margin="8,0,0,0" Padding="12,6" />
+                            </Grid>
+                            <Label Content="Where the activity / event log is saved (start, stop, shutdown, tamper)" />
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding LogsDirectory}" />
+                                <Button Grid.Column="1" Content="Browse" Style="{StaticResource SecondaryButton}" Command="{Binding BrowseLogsCommand}" Margin="8,0,0,0" Padding="12,6" />
+                            </Grid>
+                            <TextBlock Style="{StaticResource Hint}" Text="{Binding LogsDirectoryEffective}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="Leave empty to keep it with your other data. Takes effect the next time the app starts." />
+                            <CheckBox Content="Save an audio clip with every alert" IsChecked="{Binding SaveAudioClipOnAlert}" Margin="0,12,0,0" />
+                            <CheckBox Content="Update reports automatically after each alert" IsChecked="{Binding AutoGenerateReports}" />
+                            <CheckBox Content="Encrypt saved audio, recordings and screenshots at rest" IsChecked="{Binding EncryptEvidence}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="Encrypted files can only be opened inside Galiluna Shield on this Windows account (set a parent PIN to strengthen this). Reports then link to the app to play media instead of showing it in the browser. Files already saved are not changed." />
+                            <Button Content="Open advanced settings file" Style="{StaticResource LinkButton}" Command="{Binding OpenConfigFileCommand}" HorizontalAlignment="Left" Margin="0,10,0,0" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

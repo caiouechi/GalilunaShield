@@ -1,0 +1,138 @@
+<UserControl x:Class="GalilunaShield.App.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GalilunaShield.App">
+    <UserControl.Resources>
+        <local:LogLevelBrushConverter x:Key="LogBrush" />
+        <local:TimeConverter x:Key="Time" />
+        <local:EnumDescriptionConverter x:Key="EnumText" />
+        <local:BoolToVisibilityConverter x:Key="Vis" />
+    </UserControl.Resources>
+    <Grid Margin="28,24,28,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header / big toggle -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="Dashboard" Style="{StaticResource H1}" />
+                <TextBlock Style="{StaticResource MutedText}" Text="{Binding HotkeyHint}" />
+            </StackPanel>
+            <Button Grid.Column="1" Command="{Binding ToggleMonitoringCommand}" Content="{Binding ToggleButtonText}" VerticalAlignment="Center" MinWidth="190">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                        <Setter Property="Background" Value="{StaticResource Ok}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Critical}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+
+        <!-- Stat cards -->
+        <UniformGrid Grid.Row="1" Columns="4" Margin="0,18,0,0">
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding AlertsToday}" FontSize="30" FontWeight="Bold" />
+                    <TextBlock Text="alerts today" Style="{StaticResource MutedText}" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding CriticalToday}" FontSize="30" FontWeight="Bold" Foreground="{StaticResource Critical}" />
+                    <TextBlock Text="critical today" Style="{StaticResource MutedText}" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding AlertsWeek}" FontSize="30" FontWeight="Bold" />
+                    <TextBlock Text="alerts in the last 7 days" Style="{StaticResource MutedText}" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource CardBorder}">
+                <StackPanel>
+                    <TextBlock Text="Last red flag" Style="{StaticResource MutedText}" />
+                    <TextBlock Text="{Binding LastAlertText}" FontSize="13" TextTrimming="CharacterEllipsis" MaxHeight="60" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <!-- Mode selectors -->
+        <Grid Grid.Row="2" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="What to listen to" FontWeight="SemiBold" />
+                    <ComboBox Margin="0,8,0,6" ItemsSource="{Binding Modes}" SelectedItem="{Binding Mode, Mode=OneWay}" x:Name="ModeBox" SelectionChanged="ModeBox_SelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumText}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Style="{StaticResource MutedText}" Text="Microphone = what your child says. System audio = what they hear in calls and games (videos and music are skipped)." />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}">
+                <StackPanel>
+                    <TextBlock Text="Recording (proof)" FontWeight="SemiBold" />
+                    <ComboBox Margin="0,8,0,6" ItemsSource="{Binding RecordingModes}" SelectedItem="{Binding RecordingMode, Mode=OneWay}" x:Name="RecordingBox" SelectionChanged="RecordingBox_SelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumText}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Style="{StaticResource MutedText}" Text="{Binding RecordingDescription}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Activity feed -->
+        <Border Grid.Row="3" Style="{StaticResource CardBorder}" Margin="0,14,0,0" Padding="16,12,16,12">
+            <DockPanel>
+                <Grid DockPanel.Dock="Top" Margin="0,0,0,8">
+                    <TextBlock Text="Activity" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Open reports" Style="{StaticResource SecondaryButton}" Command="{Binding OpenReportsCommand}" Margin="0,0,8,0" Padding="12,5" />
+                        <Button Content="Open folder" Style="{StaticResource SecondaryButton}" Command="{Binding OpenOutputFolderCommand}" Margin="0,0,8,0" Padding="12,5" />
+                        <Button Content="Clear" Style="{StaticResource SecondaryButton}" Command="{Binding ClearActivityCommand}" Padding="12,5" />
+                    </StackPanel>
+                </Grid>
+                <ListBox ItemsSource="{Binding Activity}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                            <Setter Property="Margin" Value="0,0,0,2" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding At, Converter={StaticResource Time}}" Style="{StaticResource Mono}" Foreground="{StaticResource Muted}" VerticalAlignment="Top" Margin="0,2,0,0" />
+                                <TextBlock Grid.Column="1" Text="{Binding Message}" Foreground="{Binding Level, Converter={StaticResource LogBrush}}" FontSize="13" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

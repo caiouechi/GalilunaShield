@@ -1,0 +1,34 @@
+# name: Alcohol & partying
+# description: Drinking, getting drunk, parties and drinking games.
+[Alcohol | medium]
+beer
+beers
+vodka
+whiskey
+whisky
+tequila
+rum
+wine
+champagne
+do shots
+get wasted
+wasted
+hammered
+hangover
+hungover
+drunk
+get drunk
+drinking game
+beer pong
+party hard
+house party
+rave
+blackout drunk
+blacked out
+chug
+chugging
+kegger
+alcohol
+booze
+liquor
+fake id

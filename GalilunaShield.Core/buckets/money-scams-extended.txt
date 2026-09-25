@@ -1,0 +1,35 @@
+# name: Money, scams & account theft (extended)
+# description: Giveaway scams, crypto pitches, payment apps, account trading, hacking and doxxing threats common in games and Discord.
+[Scams & account theft | high]
+free gift card
+giveaway
+free giveaway
+crypto
+bitcoin
+invest with me
+double your money
+send me money
+send money
+cash app
+cashapp
+venmo
+paypal me
+gift card number
+redeem code
+free nitro
+discord nitro
+steam gift
+account trade
+sell your account
+buy your account
+i hacked
+hack your account
+get you banned
+ddos you
+doxx
+doxxed
+swat you
+swatting
+your password is
+give me your password
+log into my account

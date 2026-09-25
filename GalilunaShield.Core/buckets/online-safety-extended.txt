@@ -1,0 +1,35 @@
+# name: Online safety (extended)
+# description: Attempts to move a child to private channels or gather details: friend requests, DMs, server invites, "what school", "send your location", clearing history.
+[Online safety | high]
+private message
+dm me
+message me privately
+add me
+friend request
+accept my request
+join my server
+my server
+discord link
+join my discord
+your real name
+your full name
+what grade
+what school
+school name
+your school
+send your location
+share your location
+where are you now
+are your parents home
+alone at home
+video call
+facetime me
+add me on snap
+snap me
+use a vpn
+incognito
+delete history
+clear history
+clear your history
+nobody will know
+just between us

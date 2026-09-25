@@ -1,0 +1,215 @@
+# ============================================================================
+#  Galiluna Shield - red flag words and phrases
+# ============================================================================
+#  - Lines starting with # are comments. Blank lines are ignored.
+#  - A line in [brackets] starts a category. Every line below it belongs to
+#    that category until the next [bracket] line.
+#  - Add a severity after a | :  [Category | critical]
+#        critical  -> starts proof recording immediately (Smart mode)
+#        high / medium / low
+#  - One word or phrase per line. Matching ignores case, accents and
+#    punctuation, so "Don't tell mommy" also matches "dont tell mommy".
+#  - Put * at the end of a word to match any ending:
+#        kill*   matches kill, killed, killing, kills
+#  - Speech recognition is not perfect, so close mis-hearings are also
+#    flagged as "possible" matches (see FuzzyMatching in appsettings.json).
+#    Very short words (under 6 letters) are only matched exactly, to avoid
+#    false alarms like "six" vs "sex".
+#
+#  The app reloads this file automatically when you save it.
+# ============================================================================
+
+[Body safety | critical]
+private parts
+take off your pants
+take off your clothes
+take off your shirt
+pull down your pants
+show me your
+let me touch
+touch your
+touch me
+touch it
+it's ok to touch
+this is our game
+special game
+secret game
+tickle game
+don't tell mommy
+don't tell mom
+don't tell daddy
+don't tell dad
+don't tell your mom
+don't tell your dad
+don't tell your parents
+don't tell anyone
+keep it a secret
+it's a secret
+our secret
+our little secret
+this is between us
+nobody has to know
+you won't get in trouble
+i won't hurt you
+bath time together
+sleep in my bed
+come sit on my lap
+naked
+nudes
+
+[Strangers / abduction | critical]
+come with me
+get in the car
+get in my car
+your mom told me to pick you up
+your mom sent me
+your dad sent me
+i'll take you to your mom
+i have candy
+i have a puppy
+want some candy
+want to see my puppy
+help me find my dog
+don't scream
+be quiet or
+stop crying or
+i know where you live
+i'll pick you up
+come to my house
+meet me
+meet up
+are you alone
+are you home alone
+home alone
+where are your parents
+is your mom home
+where do you live
+what's your address
+what school do you go to
+how old are you
+
+[Grooming / predatory online | critical]
+send me a picture
+send me a pic
+send me a photo
+send a photo of yourself
+turn on your camera
+turn on your webcam
+webcam
+delete this chat
+delete these messages
+you're so mature
+mature for your age
+you're my special friend
+i love you more than your parents
+add me on snapchat
+add me on discord
+add me on whatsapp
+move to telegram
+boyfriend
+girlfriend
+
+[Self-harm | critical]
+kill myself
+want to die
+hurt myself
+cut myself
+end my life
+suicid*
+nobody would miss me
+better off dead
+overdose
+
+[Violence / threats | high]
+kill you
+kill him
+kill her
+shoot you
+shoot up
+stab you
+beat you up
+i will hurt you
+gonna hurt you
+i'll hurt you
+bring a gun
+bring a knife
+bomb
+murder*
+
+[Sexual content | high]
+sex
+sexy
+porn*
+horny
+penis
+vagina
+boobs
+dick
+blowjob
+hentai
+onlyfans
+strip for me
+
+[Drugs / alcohol | medium]
+weed
+marijuana
+cocaine
+heroin
+meth
+molly
+ecstasy
+xanax
+vape
+vaping
+get high
+get drunk
+edibles
+dealer
+pills
+
+[Bullying / hate | medium]
+kill yourself
+kys
+nobody likes you
+you're worthless
+everyone hates you
+loser
+stupid baby
+go die
+ugly and fat
+retard*
+faggot
+nigger
+
+[Personal information | high]
+my address is
+i live at
+my phone number is
+my password is
+my mom's credit card
+my dad's credit card
+credit card number
+gift card code
+send me the code
+read me the code
+
+[Scams / money | medium]
+free robux
+free vbucks
+free v-bucks
+free skins
+give me your login
+give me your password
+log into my account
+i'll give you robux
+
+[Profanity | low]
+fuck*
+motherfucker
+shit
+bitch
+asshole
+bastard
+cunt
+whore
+slut

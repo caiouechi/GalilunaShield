@@ -1,0 +1,18 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Sign in";
+    ViewData["bare"] = true;
+}
+<div class="login-wrap">
+    <img class="bg" src="~/img/login-bg.png" alt="" />
+    <div class="veil"></div>
+    <form class="login-card reveal" method="post">
+        <img class="logo" src="~/img/logo.png" alt="Galiluna Shield" />
+        <h1>Galiluna Shield</h1>
+        <p>Parent dashboard. Enter your parent PIN to continue.</p>
+        <input class="pin" type="password" inputmode="numeric" maxlength="8" name="Pin" autofocus autocomplete="off" placeholder="••••" />
+        <div class="err">@Model.Error</div>
+        <button class="btn" type="submit" style="width:100%;justify-content:center;margin-top:6px">Unlock</button>
+    </form>
+</div>

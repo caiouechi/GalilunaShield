@@ -1,0 +1,35 @@
+# name: Gambling & betting
+# description: Betting, casinos, loot boxes, gacha and skin gambling, including the crypto-casino streams aimed at teens.
+[Gambling | medium]
+bet
+bets
+betting
+gamble
+gambling
+casino
+casinos
+poker
+blackjack
+roulette
+slot machine
+slots
+jackpot
+the odds
+wager
+sportsbook
+parlay
+bookie
+loot box
+loot boxes
+gacha
+spin the wheel
+case opening
+open cases
+skins betting
+skin gambling
+crypto casino
+stake.com
+roobet
+rollbit
+double or nothing
+all in

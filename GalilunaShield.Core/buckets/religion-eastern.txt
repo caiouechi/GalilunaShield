@@ -1,0 +1,29 @@
+# name: Buddhism, Hinduism & Sikhism
+# description: Vocabulary of Eastern religions: Buddha, Hindu deities, karma, temples, Sikh terms.
+[Eastern religions | low]
+buddha
+buddhism
+buddhist
+hindu
+hinduism
+karma
+reincarnation
+reincarnated
+nirvana
+enlightenment
+krishna
+shiva
+vishnu
+ganesh
+ganesha
+dharma
+sikh
+sikhism
+guru
+gurdwara
+mantra
+chakra
+chakras
+diwali
+holi
+meditate on

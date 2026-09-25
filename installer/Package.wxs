@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Galiluna Shield Windows installer (WiX v5).
+  Built by build-installer.ps1, which publishes the app self-contained (no .NET install needed on the
+  target machine) and passes PublishDir / Version in.
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+
+  <Package Name="Galiluna Shield"
+           Manufacturer="Galiluna"
+           Version="$(var.Version)"
+           UpgradeCode="7B2E0C7A-5A9D-4F0E-9C3B-1D2A6F8E4B21"
+           Language="1033"
+           Scope="perMachine"
+           Compressed="yes"
+           InstallerVersion="500">
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Galiluna Shield is already installed." Schedule="afterInstallInitialize" />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <Icon Id="AppIcon" SourceFile="..\GalilunaShield.App\Assets\galiluna.ico" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon" />
+    <Property Id="ARPCOMMENTS" Value="Keeps an ear out for your child. Offline speech monitoring with red-flag alerts, proof recording and reports." />
+
+    <!-- 64-bit Windows 10 build 19041 (2004) or newer -->
+    <Launch Condition="VersionNT64" Message="Galiluna Shield requires 64-bit Windows 10 (version 2004) or Windows 11." />
+    <Launch Condition="Installed OR (VersionNT >= 603)" Message="Galiluna Shield requires Windows 10 (version 2004) or Windows 11." />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="Galiluna Shield" />
+    </StandardDirectory>
+    <StandardDirectory Id="ProgramMenuFolder" />
+    <StandardDirectory Id="DesktopFolder" />
+
+    <Feature Id="Main" Title="Galiluna Shield" Level="1" AllowAbsent="no">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="StartMenuShortcut" />
+      <ComponentRef Id="DesktopShortcut" />
+    </Feature>
+
+    <!-- Setup UI: welcome, license, folder, progress, finish (with "open now" checkbox) -->
+    <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
+
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Open Galiluna Shield now" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
+    <SetProperty Id="WixShellExecTarget" Value="[INSTALLFOLDER]GalilunaShield.exe" After="CostFinalize" />
+    <CustomAction Id="LaunchApp" DllEntry="WixShellExec" Impersonate="yes" BinaryRef="Wix4UtilCA_X64" />
+    <UI>
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApp"
+               Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed" />
+    </UI>
+
+    <!-- Make sure a running copy is closed before files are replaced/removed -->
+    <util:CloseApplication Id="CloseDesktopApp" Target="GalilunaShield.exe" CloseMessage="yes" RebootPrompt="no" Description="Galiluna Shield is running and will be closed." />
+    <util:CloseApplication Id="CloseCli" Target="galiluna.exe" CloseMessage="yes" RebootPrompt="no" />
+  </Package>
+
+  <Fragment>
+    <!-- Everything dotnet publish produced: both executables, the .NET runtime, whisper/NAudio natives, defaults -->
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(var.PublishDir)\**" />
+    </ComponentGroup>
+
+    <Component Id="StartMenuShortcut" Directory="ProgramMenuFolder" Guid="3F6D2A91-8C4B-4E7A-B1D5-9E0F2C7A6B33">
+      <Shortcut Id="StartMenuApp" Name="Galiluna Shield" Description="Keeps an ear out for your child"
+                Target="[INSTALLFOLDER]GalilunaShield.exe" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon" />
+      <RegistryValue Root="HKCU" Key="Software\Galiluna\Shield" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+
+    <Component Id="DesktopShortcut" Directory="DesktopFolder" Guid="A1C4E7B2-6D3F-4A8E-9B0C-5F2D8E1A7C44">
+      <Shortcut Id="DesktopApp" Name="Galiluna Shield" Description="Keeps an ear out for your child"
+                Target="[INSTALLFOLDER]GalilunaShield.exe" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon" />
+      <RegistryValue Root="HKCU" Key="Software\Galiluna\Shield" Name="DesktopShortcut" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+  </Fragment>
+</Wix>

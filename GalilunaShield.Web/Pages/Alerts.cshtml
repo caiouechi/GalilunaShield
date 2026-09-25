@@ -1,0 +1,85 @@
+@page
+@model AlertsModel
+@{
+    ViewData["Title"] = "Alerts";
+    ViewData["nav"] = "alerts";
+    ViewData["newCount"] = Model.NewCount;
+}
+<div class="toolbar">
+    <h2 class="section" style="margin:0">Alerts</h2>
+    <span class="muted small">Play a clip or open the screenshot to see exactly what happened.</span>
+    <span class="spacer"></span>
+    <a class="btn ghost sm @(Model.ShowDismissed ? "" : "active")" href="/Alerts">New &amp; reviewed</a>
+    <a class="btn ghost sm @(Model.ShowDismissed ? "active" : "")" href="/Alerts?all=1">Show all</a>
+</div>
+
+@if (Model.Items.Count == 0)
+{
+    <div class="card empty"><img src="~/img/calm.png" alt="" /><div><b>Nothing to show.</b><br/>No alerts match this view.</div></div>
+}
+else
+{
+    foreach (var a in Model.Items)
+    {
+        var sev = a.PossibleOnly ? "possible" : a.Severity.ToString().ToLowerInvariant();
+        <div class="alert @sev @(a.Status == AlertStatus.Dismissed ? "dismissed" : "")">
+            <div class="alert-body">
+                <div class="alert-main">
+                    <div class="alert-top">
+                        <span class="badge @sev">@(a.PossibleOnly ? "POSSIBLE" : a.Severity.ToString().ToUpper())</span>
+                        @if (a.Status == AlertStatus.Reviewed) { <span class="badge ok">REVIEWED</span> }
+                        @if (a.Status == AlertStatus.Dismissed) { <span class="badge muted-b">NOT A CONCERN</span> }
+                        <span>@a.At.ToString("ddd d MMM HH:mm:ss")</span>
+                        <span class="muted">· @(a.Confidence.ToString("P0"))</span>
+                    </div>
+                    <div class="muted small" style="margin-top:4px">Heard on <b style="color:var(--ink)">@(a.HeardWhere ?? a.Source)</b></div>
+                    <div class="said">“@a.Text”</div>
+                    <div class="chips">
+                        @foreach (var m in a.Matches)
+                        {
+                            <span class="chip"><b>@m.Word</b><span class="cat">@m.Category</span></span>
+                        }
+                    </div>
+                    @if (a.HasClip)
+                    {
+                        if (a.ClipPath!.EndsWith(".enc"))
+                        {
+                            <audio controls preload="none" src="/media/clip/@a.Id"></audio>
+                        }
+                        else
+                        {
+                            <audio controls preload="none" src="/media/clip/@a.Id"></audio>
+                        }
+                    }
+                    <div class="actions">
+                        <form method="post" action="/action/status" style="display:inline">
+                            <input type="hidden" name="id" value="@a.Id" /><input type="hidden" name="return" value="@Model.ReturnUrl" />
+                            <input type="hidden" name="status" value="Reviewed" />
+                            <button class="btn ghost sm" type="submit">Reviewed</button>
+                        </form>
+                        <form method="post" action="/action/status" style="display:inline">
+                            <input type="hidden" name="id" value="@a.Id" /><input type="hidden" name="return" value="@Model.ReturnUrl" />
+                            <input type="hidden" name="status" value="Dismissed" />
+                            <button class="btn ghost sm" type="submit">Not a concern</button>
+                        </form>
+                        <form method="post" action="/action/status" style="display:inline">
+                            <input type="hidden" name="id" value="@a.Id" /><input type="hidden" name="return" value="@Model.ReturnUrl" />
+                            <input type="hidden" name="status" value="New" />
+                            <button class="btn ghost sm" type="submit">Mark new</button>
+                        </form>
+                    </div>
+                </div>
+                @if (a.HasScreenshot)
+                {
+                    <div class="alert-side">
+                        <a class="shot" href="/media/shot/@a.Id" target="_blank">
+                            <img src="/media/shot/@a.Id" alt="Screen at the time of the alert" loading="lazy" />
+                            <span class="zoom">Open ⤢</span>
+                        </a>
+                        <div class="cap">What was on screen (all monitors)</div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}

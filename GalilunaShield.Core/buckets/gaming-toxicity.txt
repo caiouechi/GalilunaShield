@@ -1,0 +1,28 @@
+# name: Gaming toxicity
+# description: Trash talk, rage and threats typical of voice chat, including IP/doxxing threats. Low severity unless combined with the core threat list.
+[Gaming toxicity | low]
+you are trash
+ez
+get good
+git gud
+uninstall the game
+you suck
+noob
+hacker
+cheater
+i will find you
+ill find you
+find where you live
+your ip
+i know your ip
+i have your ip
+leak your ip
+rage quit
+tryhard
+ratio
+l plus ratio
+cope
+touch grass
+kys
+go cry
+crybaby

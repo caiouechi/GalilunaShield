@@ -1,0 +1,48 @@
+# name: Religion & faith (any)
+# description: Any religious talk: deities, scripture, places of worship, clergy, afterlife. Expect frequent low-severity flags ("oh my god" counts); pick a specific religion below for something narrower.
+[Religion & faith | low]
+god
+gods
+jesus
+christ
+allah
+prophet
+bible
+quran
+koran
+torah
+scripture
+church
+mosque
+temple
+synagogue
+pray
+prayer
+praying
+worship
+religion
+religious
+holy
+sacred
+heaven
+hell
+sin
+sinner
+devil
+satan
+angel
+angels
+priest
+pastor
+preacher
+imam
+rabbi
+monk
+nun
+baptism
+convert you
+join our church
+join our faith
+god will punish
+go to hell
+burn in hell

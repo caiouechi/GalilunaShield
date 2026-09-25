@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <!-- Windows 10 2004+ APIs (process loopback) are guarded at runtime with OperatingSystem.IsWindowsVersionAtLeast; the WinRT projection assembly (54 MB) is not needed. -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>GalilunaShield.App</RootNamespace>
+    <AssemblyName>GalilunaShield</AssemblyName>
+    <ApplicationIcon>Assets\galiluna.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Product>Galiluna Shield</Product>
+    <Company>Galiluna</Company>
+    <Description>Galiluna Shield - keeps an ear out for your child.</Description>
+    <Version>1.0.0</Version>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- WinForms is only used for the tray icon; keep its namespace out of the implicit usings so WPF types win. -->
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+    <Using Include="System.IO" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GalilunaShield.Core\GalilunaShield.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\**\*.png" />
+    <Resource Include="Assets\**\*.jpg" />
+    <Content Include="Assets\galiluna.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\legal\*.md" Link="legal\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\GalilunaShield\appsettings.json" Link="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
+

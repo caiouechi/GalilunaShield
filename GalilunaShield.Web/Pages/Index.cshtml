@@ -1,0 +1,74 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["nav"] = "home";
+    ViewData["newCount"] = Model.NewCount;
+}
+<section class="hero reveal">
+    <img class="bg" src="~/img/hero.png" alt="" />
+    <div class="veil"></div>
+    <div class="content">
+        <h1>Keeping an ear out for your child</h1>
+        <p>Everything Galiluna Shield hears and sees on this computer, in one place. You are viewing it privately over your home network.</p>
+        <div class="status-chip"><span class="dot @(Model.Running ? "live" : "")"></span> @(Model.Running ? "Monitoring is active" : "Monitoring is off right now")</div>
+    </div>
+</section>
+
+<div class="grid cards">
+    <div class="card stat @(Model.Today > 0 ? "warn" : "ok")"><div class="v">@Model.Today</div><div class="l">alerts today</div><div class="spark">🛎️</div></div>
+    <div class="card stat @(Model.CriticalWeek > 0 ? "crit" : "")"><div class="v">@Model.CriticalWeek</div><div class="l">critical this week</div><div class="spark">🚨</div></div>
+    <div class="card stat"><div class="v">@Model.Week</div><div class="l">alerts this week</div><div class="spark">📅</div></div>
+    <div class="card stat @(Model.NewCount > 0 ? "high" : "ok")"><div class="v">@Model.NewCount</div><div class="l">to review</div><div class="spark">👀</div></div>
+</div>
+
+<h2 class="section">Alerts by day</h2>
+<div class="bars">
+    @foreach (var (label, count, pct) in Model.DayBars)
+    {
+        <div class="bar" title="@label: @count alert(s)"><div class="fill" style="height:@(pct)%"></div><span>@label</span></div>
+    }
+</div>
+
+<div class="grid" style="grid-template-columns:1.4fr 1fr;margin-top:8px" id="lower">
+    <div>
+        <h2 class="section">Latest alerts</h2>
+        @if (Model.Latest.Count == 0)
+        {
+            <div class="card empty"><img src="~/img/calm.png" alt="" /><div><b>All quiet.</b><br/>No red flags in the last 60 days.</div></div>
+        }
+        else
+        {
+            foreach (var a in Model.Latest)
+            {
+                var sev = a.PossibleOnly ? "possible" : a.Severity.ToString().ToLowerInvariant();
+                <div class="alert @sev">
+                    <div class="alert-top">
+                        <span class="badge @sev">@(a.PossibleOnly ? "POSSIBLE" : a.Severity.ToString().ToUpper())</span>
+                        <span>@a.At.ToString("ddd d MMM HH:mm")</span>
+                        <span class="muted">· @(a.HeardWhere ?? a.Source)</span>
+                    </div>
+                    <div class="said">“@a.Text”</div>
+                    <a class="btn ghost sm" href="/Alerts">Open in Alerts →</a>
+                </div>
+            }
+        }
+    </div>
+    <div>
+        <h2 class="section">By category (this week)</h2>
+        <table>
+            <tr><th>Category</th><th>Severity</th><th>Count</th></tr>
+            @foreach (var c in Model.Categories)
+            {
+                <tr><td>@c.Category</td><td><span class="badge @c.Severity.ToString().ToLower()">@c.Severity</span></td><td>@c.Count</td></tr>
+            }
+            @if (Model.Categories.Count == 0)
+            {
+                <tr><td colspan="3" class="muted">Nothing this week.</td></tr>
+            }
+        </table>
+        <div style="margin-top:16px">
+            <a class="btn" href="/Reports">Open full reports</a>
+        </div>
+    </div>
+</div>

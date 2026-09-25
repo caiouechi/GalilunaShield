@@ -1,0 +1,40 @@
+# name: Drugs slang (extended)
+# description: Street and online slang for cannabis, pills, psychedelics and inhalants beyond the core drugs list.
+[Drugs slang | medium]
+blunt
+joint
+bong
+dab
+dabs
+dab pen
+carts
+420
+kush
+zaza
+loud pack
+percs
+percocet
+oxy
+oxycontin
+lean
+purple drank
+codeine
+shrooms
+acid
+lsd
+tabs
+ketamine
+special k
+adderall
+addy
+nangs
+whippets
+poppers
+mdma
+snort
+snorting
+my plug
+get lit
+high af
+stoned
+baked

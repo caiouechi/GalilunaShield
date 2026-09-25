@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalilunaShield.Core", "GalilunaShield.Core\GalilunaShield.Core.csproj", "{EFBBDA48-6C59-4974-BC13-A7B52A1A2954}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalilunaShield", "GalilunaShield\GalilunaShield.csproj", "{D35E5851-2178-4E0A-B083-06B30BB7D023}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalilunaShield.App", "GalilunaShield.App\GalilunaShield.App.csproj", "{025DE5CD-83EC-4EA1-AFDD-A7A7733D3E38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalilunaShield.Tests", "GalilunaShield.Tests\GalilunaShield.Tests.csproj", "{C963FAFE-ABAB-4DB3-821B-9FF93BD4B7BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalilunaShield.Web", "GalilunaShield.Web\GalilunaShield.Web.csproj", "{4F53A01C-2180-4625-BC6A-DD0206C9C7BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFBBDA48-6C59-4974-BC13-A7B52A1A2954}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFBBDA48-6C59-4974-BC13-A7B52A1A2954}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFBBDA48-6C59-4974-BC13-A7B52A1A2954}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFBBDA48-6C59-4974-BC13-A7B52A1A2954}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D35E5851-2178-4E0A-B083-06B30BB7D023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D35E5851-2178-4E0A-B083-06B30BB7D023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D35E5851-2178-4E0A-B083-06B30BB7D023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D35E5851-2178-4E0A-B083-06B30BB7D023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{025DE5CD-83EC-4EA1-AFDD-A7A7733D3E38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{025DE5CD-83EC-4EA1-AFDD-A7A7733D3E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{025DE5CD-83EC-4EA1-AFDD-A7A7733D3E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{025DE5CD-83EC-4EA1-AFDD-A7A7733D3E38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C963FAFE-ABAB-4DB3-821B-9FF93BD4B7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C963FAFE-ABAB-4DB3-821B-9FF93BD4B7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C963FAFE-ABAB-4DB3-821B-9FF93BD4B7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C963FAFE-ABAB-4DB3-821B-9FF93BD4B7BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F53A01C-2180-4625-BC6A-DD0206C9C7BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F53A01C-2180-4625-BC6A-DD0206C9C7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F53A01C-2180-4625-BC6A-DD0206C9C7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F53A01C-2180-4625-BC6A-DD0206C9C7BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

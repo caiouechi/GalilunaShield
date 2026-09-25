@@ -1,0 +1,31 @@
+@page
+@model ReportsModel
+@{
+    ViewData["Title"] = "Reports";
+    ViewData["nav"] = "reports";
+}
+<div class="toolbar">
+    <h2 class="section" style="margin:0">Reports</h2>
+    <span class="muted small">Full daily and weekly summaries with the audio embedded.</span>
+</div>
+
+@if (Model.Files.Count == 0)
+{
+    <div class="card empty"><img src="~/img/calm.png" alt="" /><div><b>No reports yet.</b><br/>A daily report appears here after the first alert.</div></div>
+}
+else
+{
+    <table>
+        <tr><th>Report</th><th style="width:200px">Updated</th><th style="width:120px"></th></tr>
+        @foreach (var f in Model.Files)
+        {
+            var kind = f.Name.StartsWith("week-") ? "Weekly" : "Daily";
+            var label = System.IO.Path.GetFileNameWithoutExtension(f.Name).Replace("report-", "").Replace("week-", "").Replace("_to_", " to ");
+            <tr>
+                <td><span class="badge ok">@kind</span> &nbsp; @label</td>
+                <td class="muted small">@f.LastWriteTime.ToString("d MMM HH:mm")</td>
+                <td><a class="btn ghost sm" href="/report/@f.Name" target="_blank">Open ↗</a></td>
+            </tr>
+        }
+    </table>
+}

@@ -1,0 +1,37 @@
+# name: Weapons & guns
+# description: Firearms, knives and explosives. Shooter games (Fortnite, Call of Duty...) will trigger this constantly; best for younger children or microphone-only listening.
+[Weapons | medium]
+gun
+guns
+pistol
+rifle
+shotgun
+sniper
+ak-47
+ak47
+ar-15
+ar15
+glock
+uzi
+ammo
+ammunition
+bullet
+bullets
+knife
+knives
+machete
+switchblade
+grenade
+explosive
+explosives
+make a bomb
+build a bomb
+pipe bomb
+silencer
+load the gun
+loaded gun
+shoot him
+shoot her
+shoot them
+headshot
+buy a gun

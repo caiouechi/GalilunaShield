@@ -1,0 +1,109 @@
+<UserControl x:Class="GalilunaShield.App.Views.AlertsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GalilunaShield.App"
+             xmlns:views="clr-namespace:GalilunaShield.App.Views">
+    <UserControl.Resources>
+        <local:SeverityBrushConverter x:Key="SevBrush" />
+        <local:TimeConverter x:Key="Time" />
+        <local:PercentConverter x:Key="Percent" />
+        <local:BoolToVisibilityConverter x:Key="Vis" />
+        <local:BoolToVisibilityConverter x:Key="VisInverse" Invert="True" />
+        <local:ZeroToVisibilityConverter x:Key="Zero" />
+        <local:PathToThumbnailConverter x:Key="Thumb" Width="280" />
+        <local:NotNullToVisibilityConverter x:Key="NotNull" />
+    </UserControl.Resources>
+    <Grid Margin="28,24,28,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <StackPanel>
+                <TextBlock Text="Alerts" Style="{StaticResource H1}" />
+                <TextBlock Style="{StaticResource MutedText}" Text="Newest first. Play the clip to hear what was said. Mark each one Reviewed or Not a concern, and mute words or apps that keep flagging harmlessly so real alerts stand out." />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <CheckBox Content="Show dismissed" IsChecked="{Binding ShowDismissed}" VerticalAlignment="Center" Margin="0,0,14,0" />
+                <Button Content="Stop playback" Style="{StaticResource SecondaryButton}" Command="{Binding StopClipCommand}" Margin="0,0,8,0" />
+                <Button Content="Open alerts folder" Style="{StaticResource SecondaryButton}" Command="{Binding OpenOutputFolderCommand}" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,16,0,0">
+            <TextBlock Text="No red flags recorded yet. That's good news." Style="{StaticResource MutedText}" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Visibility="{Binding Alerts.Count, Converter={StaticResource Zero}}" />
+            <ListBox ItemsSource="{Binding AlertsView}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource CardBorder}" Padding="16,12" Opacity="{Binding IsDismissed, Converter={x:Static views:AlertsView.DimIfDismissed}}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border Width="6" CornerRadius="3" Margin="0,0,14,0" Background="{Binding Severity, Converter={StaticResource SevBrush}}" />
+                                <StackPanel Grid.Column="1">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Style="{StaticResource Badge}" Background="{Binding Severity, Converter={StaticResource SevBrush}}" Visibility="{Binding PossibleOnly, Converter={StaticResource VisInverse}}">
+                                            <TextBlock Style="{StaticResource BadgeText}" Text="{Binding Severity}" />
+                                        </Border>
+                                        <Border Style="{StaticResource Badge}" Background="{StaticResource Possible}" Visibility="{Binding PossibleOnly, Converter={StaticResource Vis}}">
+                                            <TextBlock Style="{StaticResource BadgeText}" Text="POSSIBLE" />
+                                        </Border>
+                                        <!-- Triage status -->
+                                        <Border Style="{StaticResource Badge}" Background="{StaticResource Ok}" Margin="6,0,0,0" Visibility="{Binding IsReviewed, Converter={StaticResource Vis}}">
+                                            <TextBlock Style="{StaticResource BadgeText}" Text="REVIEWED" />
+                                        </Border>
+                                        <Border Style="{StaticResource Badge}" Background="{StaticResource Muted}" Margin="6,0,0,0" Visibility="{Binding IsDismissed, Converter={StaticResource Vis}}">
+                                            <TextBlock Style="{StaticResource BadgeText}" Text="NOT A CONCERN" />
+                                        </Border>
+                                        <TextBlock Text="{Binding At, Converter={StaticResource Time}, ConverterParameter='ddd d MMM HH:mm:ss'}" Style="{StaticResource MutedText}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding Confidence, Converter={StaticResource Percent}, StringFormat='{}{0} confident'}" Style="{StaticResource MutedText}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <TextBlock Margin="0,4,0,0">
+                                        <Run Text="Heard on:" Foreground="{StaticResource Muted}" FontSize="12" /><Run Text=" " /><Run Text="{Binding HeardWhere, Mode=OneWay}" FontWeight="SemiBold" FontSize="13" />
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding Text, StringFormat='&#x201C;{0}&#x201D;'}" FontSize="16" Margin="0,6,0,4" TextWrapping="Wrap" />
+                                    <ItemsControl ItemsSource="{Binding Matches}">
+                                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{StaticResource BrandLight}" CornerRadius="6" Padding="8,3" Margin="0,4,6,0">
+                                                    <TextBlock FontSize="12">
+                                                        <Run Text="{Binding Word, Mode=OneWay}" FontWeight="SemiBold" /><Run Text=" " /><Run Text="{Binding Category, Mode=OneWay}" Foreground="{StaticResource Muted}" />
+                                                    </TextBlock>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <!-- Triage actions -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                        <Button Content="Reviewed" Style="{StaticResource SecondaryButton}" Padding="10,4" Margin="0,0,6,0" Command="{Binding ReviewCommand}" />
+                                        <Button Content="Not a concern" Style="{StaticResource SecondaryButton}" Padding="10,4" Margin="0,0,6,0" Command="{Binding DismissCommand}" />
+                                        <Button Content="Mute this word" Style="{StaticResource SecondaryButton}" Padding="10,4" Margin="0,0,6,0" Command="{Binding MuteWordCommand}" />
+                                        <Button Content="{Binding MuteAppText}" Style="{StaticResource SecondaryButton}" Padding="10,4" Command="{Binding MuteAppCommand}" Visibility="{Binding AppName, Converter={StaticResource NotNull}}" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" VerticalAlignment="Top" Margin="12,0,0,0" Width="200">
+                                    <Button Padding="0" BorderThickness="0" Background="Transparent" Cursor="Hand" HorizontalContentAlignment="Stretch"
+                                            Command="{Binding OpenScreenshotCommand}" Visibility="{Binding ScreenshotPath, Converter={StaticResource NotNull}}" ToolTip="Open the full screenshot" Margin="0,0,0,6">
+                                        <Border CornerRadius="6" BorderBrush="{StaticResource Line}" BorderThickness="1" ClipToBounds="True">
+                                            <Image Source="{Binding ScreenshotPath, Converter={StaticResource Thumb}}" Stretch="UniformToFill" MaxHeight="112" />
+                                        </Border>
+                                    </Button>
+                                    <TextBlock Text="What was on screen (all monitors)" Style="{StaticResource MutedText}" FontSize="11" TextAlignment="Center" Margin="0,-2,0,6"
+                                               Visibility="{Binding ScreenshotPath, Converter={StaticResource NotNull}}" />
+                                    <Button Content="&#x25B6;  Play clip" Command="{Binding PlayClipCommand}" Padding="12,6" />
+                                    <Button Content="Details" Style="{StaticResource SecondaryButton}" Command="{Binding OpenDetailsCommand}" Padding="12,5" Margin="0,6,0,0" />
+                                    <Button Content="Show in folder" Style="{StaticResource SecondaryButton}" Command="{Binding RevealCommand}" Padding="12,5" Margin="0,6,0,0" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>

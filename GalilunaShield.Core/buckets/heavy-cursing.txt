@@ -1,0 +1,40 @@
+# name: Heavy cursing (extended)
+# description: Everyday swearing, crude slang and insults beyond the core profanity list. Pair with the "cursing a lot" rule in Settings to be told only when it piles up.
+[Heavy cursing | low]
+damn
+goddamn
+dammit
+crap
+holy crap
+piss off
+pissed off
+pissed
+what the hell
+bloody hell
+screw you
+screw this
+suck my
+sucks ass
+dumbass
+jackass
+smartass
+badass
+douche*
+bullshit
+horseshit
+freaking
+frickin*
+friggin*
+wanker
+bugger
+arse
+arsehole
+twat
+prick
+son of a bitch
+shut the hell up
+shut up idiot
+stfu
+wtf
+gtfo
+lmfao

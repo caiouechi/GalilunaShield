@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <!-- Windows 10 2004+ APIs (process loopback) are guarded at runtime with OperatingSystem.IsWindowsVersionAtLeast; the WinRT projection assembly (54 MB) is not needed. -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>GalilunaShield</RootNamespace>
+    <Description>Galiluna Shield engine: audio capture, offline transcription, red-flag detection, recording and reporting.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="3.1.0" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.12" />
+    <PackageReference Include="Whisper.net" Version="1.9.1" />
+    <PackageReference Include="Whisper.net.Runtime" Version="1.9.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Ships next to any app that references the engine; parents edit it directly. -->
+    <Content Include="redflags.txt" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="buckets\*.txt" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

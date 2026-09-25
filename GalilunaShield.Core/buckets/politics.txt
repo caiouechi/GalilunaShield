@@ -1,0 +1,43 @@
+# name: Politics & elections
+# description: Political parties, ideologies, elections and hot-button issues. Names of current politicians change; add your own.
+[Politics | low]
+election
+elections
+vote for
+voting for
+president
+prime minister
+democrat
+democrats
+republican
+republicans
+liberal
+liberals
+conservative
+conservatives
+left wing
+right wing
+leftist
+communist
+communism
+socialist
+socialism
+fascist
+fascism
+nazi
+nazis
+protest
+riot
+rioting
+immigration
+immigrants
+abortion
+gun control
+propaganda
+woke
+maga
+antifa
+parliament
+congress
+political
+politics

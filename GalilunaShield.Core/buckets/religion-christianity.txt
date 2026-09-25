@@ -1,0 +1,45 @@
+# name: Christianity
+# description: Christian vocabulary: Jesus, the Bible, church, clergy, sacraments, denominations.
+[Christianity | low]
+jesus
+jesus christ
+christ
+bible
+gospel
+gospels
+church
+chapel
+priest
+pastor
+preacher
+reverend
+bishop
+pope
+baptism
+baptized
+baptised
+communion
+confession
+catholic
+protestant
+evangelical
+baptist
+mormon
+jehovah
+born again
+holy spirit
+holy ghost
+crucifix
+crucified
+salvation
+saviour
+savior
+sin
+sinner
+repent
+christian
+hallelujah
+praise the lord
+accept jesus
+jesus loves you
+sunday school

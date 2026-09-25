@@ -1,0 +1,89 @@
+<Window x:Class="GalilunaShield.App.ConsentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Galiluna Shield - Before you begin" Height="720" Width="720"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize" MinHeight="560" MinWidth="620"
+        Icon="Assets/galiluna.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{StaticResource BrandDark}" Padding="24,20">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Assets/logo-64.png" Width="42" Height="42" />
+                <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="Before you begin" Foreground="White" FontSize="20" FontWeight="SemiBold" />
+                    <TextBlock Text="Please read and confirm the following. It protects your child, other people, and you." Foreground="#C9D1F2" FontSize="13" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" Padding="28,20" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Style="{StaticResource H2}" Text="What Galiluna Shield does" Margin="0,0,0,6" />
+                <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Ink}">
+                    Galiluna Shield listens to what your child says and hears on this computer, understands it on this
+                    computer, and alerts you to red-flag words. It can save audio clips, recordings and screenshots as
+                    evidence. Nothing is uploaded to us or anyone else; everything stays on this computer under your control.
+                </TextBlock>
+
+                <TextBlock Style="{StaticResource H2}" Text="This is a serious tool. Use it lawfully." />
+                <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Ink}">
+                    Recording people - especially children, and especially other people who talk to your child in a call -
+                    is regulated, and the rules differ by country and state. Some places require everyone in a conversation
+                    to agree before it can be recorded. You are responsible for following the law where you live. If you
+                    cannot, use microphone-only mode or turn recording off and rely on live alerts.
+                </TextBlock>
+
+                <Border Background="{StaticResource BrandLight}" CornerRadius="8" Padding="14" Margin="0,14,0,0">
+                    <StackPanel>
+                        <Label Content="About how old is the child on this computer?" />
+                        <ComboBox x:Name="AgeBox" Width="220" HorizontalAlignment="Left"
+                                  SelectionChanged="Input_Changed">
+                            <ComboBoxItem Content="Under 5" />
+                            <ComboBoxItem Content="5 to 8" />
+                            <ComboBoxItem Content="9 to 12" />
+                            <ComboBoxItem Content="13 to 15" />
+                            <ComboBoxItem Content="16 to 17" />
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Style="{StaticResource H2}" Text="Please confirm each of these" />
+                <StackPanel x:Name="Checks">
+                    <CheckBox Margin="0,4" Checked="Input_Changed" Unchecked="Input_Changed"
+                              Content="I am the parent or legal guardian of the child who uses this computer, or am otherwise legally authorised to monitor this person on this computer." />
+                    <CheckBox Margin="0,4" Checked="Input_Changed" Unchecked="Input_Changed"
+                              Content="I own or administer this computer." />
+                    <CheckBox Margin="0,4" Checked="Input_Changed" Unchecked="Input_Changed">
+                        <TextBlock TextWrapping="Wrap" Text="I understand this software can record other people's voices (for example the other side of a call), and I am solely responsible for complying with the recording and privacy laws where I live, including obtaining any consent the law requires." />
+                    </CheckBox>
+                    <CheckBox Margin="0,4" Checked="Input_Changed" Unchecked="Input_Changed"
+                              Content="I will use this software only to protect a minor in my care, and only in lawful ways." />
+                    <CheckBox Margin="0,4" Checked="Input_Changed" Unchecked="Input_Changed">
+                        <TextBlock TextWrapping="Wrap">
+                            <Run Text="I have read and accept the " /><Hyperlink Click="OpenEula">End User License Agreement</Hyperlink><Run Text=", the " /><Hyperlink Click="OpenPrivacy">Privacy Policy</Hyperlink><Run Text=" and the " /><Hyperlink Click="OpenAup">Acceptable Use Policy</Hyperlink><Run Text="." />
+                        </TextBlock>
+                    </CheckBox>
+                </StackPanel>
+
+                <TextBlock Style="{StaticResource MutedText}" Margin="0,14,0,0" TextWrapping="Wrap"
+                           Text="Child-safety experts widely recommend talking with your child about online safety, and where appropriate about monitoring, rather than relying on secret surveillance alone. Galiluna Shield is a tool to help you notice and investigate; it is not a substitute for supervision, and it is not an emergency service." />
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Padding="24,14">
+            <Grid>
+                <TextBlock x:Name="Hint" Style="{StaticResource MutedText}" VerticalAlignment="Center"
+                           Text="Tick every box and choose an age to continue." />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Decline and exit" Style="{StaticResource SecondaryButton}" Margin="0,0,10,0" Click="Decline_Click" />
+                    <Button x:Name="AgreeButton" Content="I agree - continue" Click="Agree_Click" IsEnabled="False" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,35 @@
+# name: Horror & scary content
+# description: Horror games, creepypasta characters, jump scares and gore that frighten younger children.
+[Horror & scary | medium]
+horror
+horror game
+scary game
+jumpscare
+jump scare
+haunted
+haunted house
+demon
+possessed
+exorcism
+slenderman
+slender man
+creepypasta
+jeff the killer
+five nights
+fnaf
+freddy fazbear
+poppy playtime
+huggy wuggy
+siren head
+sirenhead
+backrooms
+skinwalker
+skin walker
+gore
+gory
+blood everywhere
+decapitat*
+dismember*
+dead body
+dead bodies
+killer clown
